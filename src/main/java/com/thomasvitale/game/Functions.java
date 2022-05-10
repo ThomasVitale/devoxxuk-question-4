@@ -56,6 +56,8 @@ public class Functions {
         for (char character : answers.textual().toCharArray()) {
             if (character == ANSWER.charAt(points)) {
                 points++;
+            } else if (points == answers.textual().toCharArray().length) {
+                break;
             } else {
                 break;
             }
