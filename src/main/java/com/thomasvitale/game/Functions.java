@@ -25,6 +25,7 @@ import java.util.function.Function;
 @Configuration
 public class Functions {
 
+    private static final String ANSWER = "0011223344556677889900x00998877665544332211";
     private static final Logger log = LoggerFactory.getLogger(Functions.class);
     private final GameEventingProperties gameEventingProperties;
     private final Environment environment;
@@ -50,8 +51,14 @@ public class Functions {
     }
 
     private GameScore scoreLevel(Answers answers) {
-        var points = answers.message().length();
-        points += answers.remainingTime();
+        var points = 0;
+        for (char character : answers.textual().toCharArray()) {
+            if (character == ANSWER.charAt(points)) {
+                points++;
+            } else {
+                break;
+            }
+        }
         log.debug("Total score for {} is {}", answers.player(), points);
         return new GameScore(answers.player(), answers.sessionId(), LocalDateTime.now(), environment.getProperty("spring.application.name"), points);
     }

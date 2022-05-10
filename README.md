@@ -11,7 +11,7 @@ has been initialized using the Knative [func](https://github.com/knative-sandbox
 ## Usage
 
 ```shell
-$ http <url> player="jon-snow" sessionId="game-blahblah" message="Spring loves Knative" remainingTime=13
+$ http <url> player="jon-snow" sessionId="game-blahblah" message="Spring loves Knative"
 
 HTTP/1.1 200 OK
 Content-Length: 98
@@ -113,7 +113,7 @@ export URL=$(kn service describe $(basename $PWD) -ourl)
 Then, call the function as follows.
 
 ```shell script
-http $URL player="jon-snow" sessionId="game-blahblah" message="Spring loves Knative" remainingTime=13
+http $URL player="jon-snow" sessionId="game-blahblah" message="Spring loves Knative"
 ```
 
 ## Cleanup

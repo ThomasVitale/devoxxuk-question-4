@@ -61,7 +61,7 @@ public class DevoxxUkQuestion4ApplicationTests {
 
     @Test
     void whenAnswersSubmittedThenGameScoreReturned() throws InterruptedException {
-        var answers = new Answers("jon-snow", UUID.randomUUID().toString(), "Spring loves Knative", 13);
+        var answers = new Answers("jon-snow", UUID.randomUUID().toString(), "0011223bfdsbfgwbg");
 
         var mockResponse = new MockResponse().setResponseCode(201);
         mockWebServer.enqueue(mockResponse);
@@ -77,7 +77,7 @@ public class DevoxxUkQuestion4ApplicationTests {
                     assertThat(gameScore.sessionId()).isEqualTo(answers.sessionId());
                     assertThat(gameScore.gameTime()).isNotNull();
                     assertThat(gameScore.level()).isEqualTo("devoxxuk-question-4");
-                    assertThat(gameScore.levelScore()).isEqualTo(answers.message().length() + answers.remainingTime());
+                    assertThat(gameScore.levelScore()).isEqualTo(7);
                 });
 
         var recordedRequest = mockWebServer.takeRequest();
