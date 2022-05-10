@@ -24,6 +24,7 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.IOException;
 import java.util.UUID;
 
+import static com.thomasvitale.game.Functions.ANSWER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = DevoxxUkQuestion4Application.class, webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -78,6 +79,37 @@ public class DevoxxUkQuestion4ApplicationTests {
                     assertThat(gameScore.gameTime()).isNotNull();
                     assertThat(gameScore.level()).isEqualTo("devoxxuk-question-4");
                     assertThat(gameScore.levelScore()).isEqualTo(7);
+                });
+
+        var recordedRequest = mockWebServer.takeRequest();
+        assertThat(recordedRequest.getMethod()).isEqualTo("POST");
+        assertThat(recordedRequest.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
+        assertThat(recordedRequest.getHeader("ce-id")).isNotEmpty();
+        assertThat(recordedRequest.getHeader("ce-specversion")).isNotEmpty();
+        assertThat(recordedRequest.getHeader("ce-source")).isNotEmpty();
+        assertThat(recordedRequest.getHeader("ce-type")).isEqualTo("GameScoreEvent");
+        assertThat(recordedRequest.getBodySize()).isPositive();
+    }
+
+    @Test
+    void whenAnswersSubmittedWithLongerTestThenGameScoreReturned() throws InterruptedException {
+        var answers = new Answers("jon-snow", UUID.randomUUID().toString(), ANSWER + "abc");
+
+        var mockResponse = new MockResponse().setResponseCode(201);
+        mockWebServer.enqueue(mockResponse);
+
+        webTestClient
+                .post()
+                .uri("/answers")
+                .bodyValue(answers)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(GameScore.class).value(gameScore -> {
+                    assertThat(gameScore.player()).isEqualTo(answers.player());
+                    assertThat(gameScore.sessionId()).isEqualTo(answers.sessionId());
+                    assertThat(gameScore.gameTime()).isNotNull();
+                    assertThat(gameScore.level()).isEqualTo("devoxxuk-question-4");
+                    assertThat(gameScore.levelScore()).isEqualTo(41);
                 });
 
         var recordedRequest = mockWebServer.takeRequest();

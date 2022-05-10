@@ -25,7 +25,7 @@ import java.util.function.Function;
 @Configuration
 public class Functions {
 
-    private static final String ANSWER = "0011223344556677889900x00998877665544332211";
+    public static final String ANSWER = "00112233445566778899x99887766554433221100";
     private static final Logger log = LoggerFactory.getLogger(Functions.class);
     private final GameEventingProperties gameEventingProperties;
     private final Environment environment;
@@ -54,10 +54,10 @@ public class Functions {
         var points = 0;
         log.debug("Answers: {}", answers);
         for (char character : answers.textual().toCharArray()) {
-            if (character == ANSWER.charAt(points)) {
-                points++;
-            } else if (points == answers.textual().toCharArray().length) {
+            if (points == ANSWER.toCharArray().length) {
                 break;
+            } else if (character == ANSWER.charAt(points)) {
+                points++;
             } else {
                 break;
             }
