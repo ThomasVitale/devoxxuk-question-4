@@ -52,6 +52,7 @@ public class Functions {
 
     private GameScore scoreLevel(Answers answers) {
         var points = 0;
+        log.debug("Answers: {}", answers);
         for (char character : answers.textual().toCharArray()) {
             if (character == ANSWER.charAt(points)) {
                 points++;
